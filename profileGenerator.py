@@ -23,7 +23,7 @@ def generateProfile(image_files: List[str]) -> Dict[str, Any]:
     system_prompt = """
     Analyze the provided images and create a detailed customer profile. 
     Focus on visual cues to determine age, occupation, location, ethnicity, style, and other characteristics.
-    Provide the response in a JSON format with the following fields:
+    Provide the response in a JSON format, without the code block, with the following fields:
     - Age (integer)
     - Occupation (string)
     - Location (string, based on visual context)
@@ -33,6 +33,19 @@ def generateProfile(image_files: List[str]) -> Dict[str, Any]:
     - Style Archetype (string)
     - Color Palette (string)
     - Influence (string)
+
+    example response:
+    {
+    "Age": 20,
+    "Occupation": "Student/Artist",
+    "Location": "Urban Area",
+    "Hobbies": ["Gaming", "Drawing", "Anime/Manga"],
+    "Ethnicity": "Not Specified",
+    "Attire Style": "Casual",
+    "Style Archetype": "Youthful/Trendy",
+    "Color Palette": "Black, Blue, Pink",
+    "Influence": "Anime Culture"
+    }
     """
 
     # Make the API request
@@ -51,6 +64,8 @@ def generateProfile(image_files: List[str]) -> Dict[str, Any]:
             ],
             max_tokens=1000
         )
+
+        print(response.choices[0].message.content)
         
         # Parse the response
         profile_data = json.loads(response.choices[0].message.content)
