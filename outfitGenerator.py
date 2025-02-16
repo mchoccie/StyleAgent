@@ -58,7 +58,8 @@ def generateOutfits(profile: Dict[str, Any], num_outfits: int = 5) -> List[str]:
     - Influences: {profile["Influence"]}
     
     The outfit should be a full-body shot on a plain background, photorealistic, high quality fashion photography style.
-    Show the complete outfit including accessories. No human in the image, just the clothing arranged.
+    Show the complete outfit including accessories. No human in the image, just the clothing arranged. Please demonstrate some variety 
+    in the outfits. while maintaining the style archetype and color palette.
     """
 
     generated_images = []
