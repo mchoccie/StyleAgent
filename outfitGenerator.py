@@ -77,7 +77,14 @@ def generateOutfits(profile: Dict[str, Any], num_outfits: int = 5) -> List[str]:
 
             generated_images.append(response.data[0].url)
 
-        return generated_images
+        return {
+            "outfit_recommendations": [
+                {"url": url, "description": description}
+                for url, description in zip(
+                    generated_images, outfit_descriptions[:num_outfits]
+                )
+            ]
+        }
 
     except Exception as e:
         raise Exception(f"Error generating outfits: {str(e)}")
