@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "oaidalleapiprodscus.blob.core.windows.net",
       },
+      {
+        protocol: "https",
+        hostname: "serpapi.com", // ✅ Added serpapi.com for image loading
+      },
     ],
   },
 };

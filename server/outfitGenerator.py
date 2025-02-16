@@ -15,9 +15,9 @@ def generateOutfits(profile: Dict[str, Any], num_outfits: int = 5) -> List[str]:
         """
         system_prompt = """Given a customer profile, generate {num_outfits} unique outfit descriptions.
         Each description should be 1-2 sentences that describe the type of outfit and its purpose.
-        Consider the person's age, style preferences, and influences.
-        Focus on creating a range from casual to more dressed up while staying true to their aesthetic.
-        Return just the descriptions as a Python list of strings, no additional formatting."""
+        Consider the person's age, style preferences, and influences. Also focus only on women's clothing.
+        Focus on creating a range from casual to more dressed up while staying true to their aesthetic. Also look out for any brand specific 
+        preferences. Return just the descriptions as a Python list of strings, no additional formatting."""
 
         try:
             response = client.chat.completions.create(
@@ -58,7 +58,8 @@ def generateOutfits(profile: Dict[str, Any], num_outfits: int = 5) -> List[str]:
     - Influences: {profile["Influence"]}
     
     The outfit should be a full-body shot on a plain background, photorealistic, high quality fashion photography style.
-    Show the complete outfit including accessories. No human in the image, just the clothing arranged.
+    Show the complete outfit including accessories. No human in the image, just the clothing arranged. Also focus on only outputting women's 
+    clothing.
     """
 
     generated_images = []
