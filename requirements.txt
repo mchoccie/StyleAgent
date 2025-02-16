@@ -1,5 +1,0 @@
-fastapi[standard]
-openai
-python-dotenv
-serpapi
-google-search-results

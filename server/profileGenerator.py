@@ -21,7 +21,7 @@ def generateProfile(image_files: List[str]) -> Dict[str, Any]:
     
     # Construct the system prompt
     system_prompt = """
-    Analyze the provided images and create a detailed customer profile. 
+    Analyze the provided images and create one detailed customer profile. 
     Focus on visual cues to determine age, occupation, location, ethnicity, style, and other characteristics.
     Provide the response in a JSON format, without the code block, with the following fields:
     - Age (integer)

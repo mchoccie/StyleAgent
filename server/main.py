@@ -1,6 +1,7 @@
 from typing import Union
-
-from fastapi import FastAPI
+import os
+from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from profileGenerator import generateProfile
 from outfitGenerator import generateOutfits
 from itemGenerator import generateItems
@@ -8,6 +9,16 @@ from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 load_dotenv()
 
 
@@ -20,9 +31,8 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
-
 @app.get("/generate")
-def generate():
+def generate_img():
     def get_image_files():
         import os
 
@@ -44,6 +54,50 @@ def generate():
     return JSONResponse(
         {"profile": profile, "outfit_recommendations": outfits, "items": items}
     )
+
+@app.post("/generate")
+async def generate(images: list[UploadFile] = File(...)):
+    # Create img directory if it doesn't exist
+    os.makedirs("img", exist_ok=True)
+    
+    # Save uploaded images
+    image_files = []
+    for image in images:
+        file_path = f"img/{image.filename}"
+        with open(file_path, "wb") as f:
+            content = await image.read()
+            f.write(content)
+        image_files.append(file_path)
+
+    try:
+        # Generate profile from images
+        profile = generateProfile(image_files)
+
+        # Generate outfit recommendations
+        outfits = generateOutfits(profile)
+
+        # Generate similar items
+        items = generateItems(outfits)
+
+        # Clean up uploaded images
+        for file_path in image_files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        return JSONResponse({
+            "profile": profile,
+            "outfit_recommendations": outfits,
+            "items": items
+        })
+    except Exception as e:
+        # Clean up uploaded images in case of error
+        for file_path in image_files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        return JSONResponse(
+            status_code=500,
+            content={"error": str(e)}
+        )
 
 
 @app.get("/generate-items")
