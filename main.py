@@ -2,9 +2,10 @@ from typing import Union
 
 from fastapi import FastAPI
 from profileGenerator import generateProfile
+from dotenv import load_dotenv
 
 app = FastAPI()
-
+load_dotenv()
 
 @app.get("/")
 def read_root():
@@ -17,6 +18,6 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 @app.get("/generate")
 def generate():
-    image_files = ["path/to/image1.jpg", "path/to/image2.jpg"]
+    image_files = ["./img/animeShirt.jpeg"]
     profile = generateProfile(image_files)
     return profile

@@ -38,7 +38,7 @@ def generateProfile(image_files: List[str]) -> Dict[str, Any]:
     # Make the API request
     try:
         response = client.chat.completions.create(
-            model="gpt-4-vision-preview",
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
